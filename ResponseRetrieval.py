@@ -1,3 +1,7 @@
+import os
+import shutil
+from dotenv import load_dotenv
+import openai
 from DocumentVector import DocumentLoader, VectorDBBuilder # Importing DocumentLoader class for loading PDF documents
 from langchain.chat_models import ChatOpenAI  # Importing ChatOpenAI for chat-based models
 from langchain.memory import ConversationBufferMemory  # Importing ConversationBufferMemory for conversation memory
@@ -8,6 +12,9 @@ class ResponseRetrieval:
         self.pdf_path = pdf_path
 
     def answer(self, question, threshold):
+        # Load OpenAI API key from environment variables
+        load_dotenv()
+        openai.api_key = os.environ.get('OPENAI_API_KEY')
         # Determine temperature based on threshold for OpenAI response generation
         temperature = self._get_temperature(threshold)
         # Initialize OpenAI chat model
