@@ -35,17 +35,17 @@ class ResponseRetrieval:
             return 1
 
 # Example usage:
-# user_input = ''
-# n = 0
-# retrieval_obj = ResponseRetrieval('sample_pdf.pdf')
-# while user_input != 'endConv':
-#     if n == 0:
-#         user_input = input('Please enter the question: ')
-#     print(retrieval_obj.answer(user_input, 'Balanced'))
-#     user_input = input('Enter "finish" to end the conversation, otherwise continue: ')
-#     if user_input.lower() == 'finish':
-#         user_input = 'endConv'
-#     else:
-#         n += 1
+user_input = ''
+n = 0
+retrieval_obj = ResponseRetrieval('sample_pdf.pdf')
+while user_input != 'endConv':
+    if n == 0:
+        user_input = input('Please enter the question: ')
+    print(retrieval_obj.answer(user_input, 'Balanced'))
+    user_input = input('Enter "finish" to end the conversation, otherwise continue: ')
+    if user_input.lower() == 'finish':
+        user_input = 'endConv'
+    else:
+        n += 1
 
 
