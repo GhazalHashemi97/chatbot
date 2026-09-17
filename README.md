@@ -209,25 +209,52 @@ At completion, provide a concise summary containing:
 
 second prompt:
 
-One additional requirement before completing this branch:
+Before considering this branch complete, extend the implementation so the winning ML model can be reused later for production inference.
 
-Make sure the winning ML model is saved as a reusable inference artifact.
+1. Save the COMPLETE fitted preprocessing + model pipeline, not just the estimator. New raw input data should be able to pass directly through the saved pipeline and receive predictions.
 
-Save the COMPLETE fitted preprocessing + model pipeline, not only the estimator, so new raw data can be passed directly to it for prediction later.
+2. Save model metadata including:
+   - target column
+   - feature names
+   - expected input columns and data types
+   - classification or regression
+   - selected model name
+   - evaluation metrics
+   - class labels when applicable
+   - training timestamp/version information where useful
 
-Also save metadata describing:
-- target column
-- feature names
-- expected input schema/data types
-- problem type (classification/regression)
-- model name
-- evaluation metrics
-- class labels, when applicable
+3. Create a clean model artifact structure, for example:
 
-Structure this cleanly because future branches will use the saved artifact for:
-1. real-time inference through a FastAPI /predict endpoint
-2. batch inference through a scheduled or manually triggered job
+   artifacts/
+       best_model.joblib
+       model_metadata.json
 
-Add a simple test proving that the saved pipeline can be loaded again and successfully predict on new raw input.
+   Adjust the structure if you have a better architectural reason.
 
-Do not implement FastAPI, Airflow, or batch serving yet. Only make the current training system ready for those future components.
+4. Add reusable Python functionality for:
+   - saving the trained pipeline
+   - loading the trained pipeline
+   - validating new input against the expected schema
+   - performing inference on new raw observations
+
+5. Add automated tests proving that:
+   - the trained pipeline can be saved
+   - it can be loaded again
+   - raw test input can be passed to it
+   - a prediction is successfully returned
+   - preprocessing is applied correctly during inference
+
+6. Update README.md and AGENTS.md to document the model artifact and how future components should consume it.
+
+7. Run the full test suite and fix any failures.
+
+8. Commit these changes to the CURRENT feature branch and push them to GitHub.
+
+Do NOT implement FastAPI, Airflow, scheduling, or batch-serving infrastructure yet.
+
+The purpose of this task is to establish a clean reusable model artifact and inference layer that future branches can use for:
+- real-time API inference
+- batch inference
+- scheduled inference
+
+Work autonomously, test the implementation, fix problems you encounter, and only finish once the saved model can be loaded and used successfully for prediction.
