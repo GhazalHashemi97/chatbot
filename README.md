@@ -205,3 +205,29 @@ At completion, provide a concise summary containing:
 - commits created
 - how to run the application
 - any limitations or recommended next steps
+
+
+second prompt:
+
+One additional requirement before completing this branch:
+
+Make sure the winning ML model is saved as a reusable inference artifact.
+
+Save the COMPLETE fitted preprocessing + model pipeline, not only the estimator, so new raw data can be passed directly to it for prediction later.
+
+Also save metadata describing:
+- target column
+- feature names
+- expected input schema/data types
+- problem type (classification/regression)
+- model name
+- evaluation metrics
+- class labels, when applicable
+
+Structure this cleanly because future branches will use the saved artifact for:
+1. real-time inference through a FastAPI /predict endpoint
+2. batch inference through a scheduled or manually triggered job
+
+Add a simple test proving that the saved pipeline can be loaded again and successfully predict on new raw input.
+
+Do not implement FastAPI, Airflow, or batch serving yet. Only make the current training system ready for those future components.
